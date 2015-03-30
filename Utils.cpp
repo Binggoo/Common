@@ -315,13 +315,16 @@ CString CUtils::GetErrorMsg( DWORD dwErrorCode )
 
 void CUtils::WriteLogFile( HANDLE hFile,BOOL bTimestamp,LPCTSTR lpszFormat,... )
 {
+	if (hFile == INVALID_HANDLE_VALUE)
+	{
+		return;
+	}
+
 	TCHAR szBuffer[1024] = {NULL};
 	va_list va;
 	va_start(va, lpszFormat);
 	_vsntprintf_s(szBuffer, 1024, lpszFormat, va);
 	va_end(va);
-
-	ASSERT(hFile != INVALID_HANDLE_VALUE);
 
 	m_CSLog.Lock();
 	CString strMsg(szBuffer);
